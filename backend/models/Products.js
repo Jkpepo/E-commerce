@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema(
     category: { type: String },
     quantity: {type: Number}
   },
-  { timestamps: true }
+  { timestamps: true }  // Auto agrega createdAt y updatedAt
 );
 
 const Product = mongoose.model("Product", productSchema);
