@@ -10,9 +10,14 @@ function ListProducts() {
 
   return (
   <div>
-  <h1 className="text-3xl text-center">ListProducts</h1>
+  <h1 className="text-3xl text-center m-3 mb-8">ListProducts</h1>
 
   {/* contenedor padre */}
+
+        
+   {products && products.length > 0 ?(
+
+    
   <div className="flex flex-wrap justify-center gap-4">
     {products.map((product) => (
       <div
@@ -27,6 +32,9 @@ function ListProducts() {
       </div>
     ))}
   </div>
+ ):(
+   <div className="text-center"> No hay productos </div>
+  )}
 </div>
 
 
