@@ -1,10 +1,13 @@
-import { createContext,useState,useEffect } from "react";
+import { createContext,useState,useEffect, use } from "react";
 
 export const ProductsContext= createContext();
 
 export function ProductsProvider ({children}){
 
     const [products,setProducts]=useState([])
+    const [search,setSearch]=useState("")
+    const [category,setCategory]=useState("all")
+
     const BASE_URL="http://localhost:5000/api/products/"
 
     const fetchProducts = async ()=> {
@@ -25,7 +28,7 @@ export function ProductsProvider ({children}){
 
     
     return(
-        <ProductsContext.Provider value={{products,fetchProducts}}>
+        <ProductsContext.Provider value={{products,fetchProducts,search,setSearch,category,setCategory}}>
 
             {children}
         </ProductsContext.Provider>

@@ -1,24 +1,19 @@
-import { useContext } from "react";
-import { ProductsContext } from "../context/UseContext";
+import { useParams } from "react-router-dom"
+import { useContext } from "react"
+import { ProductsContext } from "../context/UseContext"
 
+function CategoryPage(){
+    const {category} = useParams()
+    const {products} = useContext(ProductsContext)
 
+    const filteredProductsPage = products.filter((product)=>product.category.toLowerCase() === category.toLowerCase())
 
-function ListProducts() {
-  const { products,search } = useContext(ProductsContext);
- 
-
-const filteredProducts = products.filter((product)=> product.name.toLowerCase().includes(search.toLowerCase())||
-product.category.toLowerCase().includes(search.toLowerCase()))
-
-  return (
-    <div>
-      <h1 className="text-3xl text-center m-3 mb-8">ListProducts</h1>
-
-      {/* contenedor padre */}
-      {filteredProducts && filteredProducts.length > 0 ? (
-        <div className="flex flex-wrap justify-center gap-6">
-          {filteredProducts.map((product) => (
-            <div
+    return(
+        <div>
+            Categoria:{category}
+            {filteredProductsPage.length >0 ?(
+                filteredProductsPage.map((product)=>(
+                     <div
               key={product._id}
               className="border-2 border-amber-700 w-[300px] min-h-[320px] p-4 rounded-md shadow-md bg-white m-2"
             >
@@ -42,14 +37,17 @@ product.category.toLowerCase().includes(search.toLowerCase()))
               <p className="text-sm">Stock: {product.stock}</p>
               <h3 className="text-green-600 font-semibold">Envio gratis</h3>
             </div>
-          ))}
-          
-        </div>
-      ) : (
-        <div className="text-center"> No hay productos </div>
-      )}
-    </div>
-  );
-}
 
-export default ListProducts;
+                )
+
+
+                )
+
+            ):(
+                <p> No Hay productos en esta categoria</p>
+
+            )}
+        </div>
+    )
+}
+export default CategoryPage
