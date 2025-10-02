@@ -4,11 +4,16 @@ import { ProductsContext } from "../context/UseContext";
 
 
 function ListProducts() {
-  const { products,search } = useContext(ProductsContext);
+  const { products,query } = useContext(ProductsContext);
  
 
-const filteredProducts = products.filter((product)=> product.name.toLowerCase().includes(search.toLowerCase())||
-product.category.toLowerCase().includes(search.toLowerCase()))
+const filteredProducts = query.trim() === "" 
+  ? null
+  : products.filter((product) =>
+      product.name.toLowerCase().includes(query.toLowerCase()) ||
+      product.category.toLowerCase().includes(query.toLowerCase()) ||
+      product.description.toLowerCase().includes(query.toLowerCase())
+    );
 
   return (
     <div>

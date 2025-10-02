@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom"
 import { useContext } from "react"
 import { ProductsContext } from "../context/UseContext"
 
-function CategoryPage(){
+export const CategoryPage = ()=>{
     const {category} = useParams()
     const {products} = useContext(ProductsContext)
 
@@ -50,4 +50,3 @@ function CategoryPage(){
         </div>
     )
 }
-export default CategoryPage

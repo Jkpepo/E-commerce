@@ -6,6 +6,7 @@ export function ProductsProvider ({children}){
 
     const [products,setProducts]=useState([])
     const [search,setSearch]=useState("")
+    const [query, setQuery] = useState("")
     const [category,setCategory]=useState("all")
 
     const BASE_URL="http://localhost:5000/api/products/"
@@ -28,7 +29,7 @@ export function ProductsProvider ({children}){
 
     
     return(
-        <ProductsContext.Provider value={{products,fetchProducts,search,setSearch,category,setCategory}}>
+        <ProductsContext.Provider value={{products,fetchProducts,search,setSearch,category,setCategory,query,setQuery}}>
 
             {children}
         </ProductsContext.Provider>
