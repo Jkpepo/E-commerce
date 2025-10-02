@@ -5,9 +5,9 @@ const productSchema = new mongoose.Schema(
     description: { type: String },
     price: { type: Number, required: true },
     image: { type: String }, // URL de la imagen
-    stock: { type: Number, default: 0 },
-    category: { type: String },
-    quantity: {type: Number}
+    stock: { type: Number, default: 1 },
+    category: { type: String},
+    quantity: {type: Number,default:1}
   },
   { timestamps: true }  // Auto agrega createdAt y updatedAt
 );

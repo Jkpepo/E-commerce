@@ -11,13 +11,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 // Ruta base de prueba
+
 app.get("/",(req,res)=>{
     res.send("Api funcionando");
 });
 
 
-//Middleware de productos
+//Middleware de productos 
 app.use("/api/products",productsRoutes);
+
 
 //conectar con MongoDB
 
