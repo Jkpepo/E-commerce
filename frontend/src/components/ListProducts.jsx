@@ -1,23 +1,27 @@
 import { useContext } from "react";
-import { ProductsContext } from "../context/UseContext";
+import { ProductsContext } from "../context/UseProductsContext";
+import { CarContext } from "../context/UseCarContext";
 
 
 
 function ListProducts() {
   const { products,query } = useContext(ProductsContext);
+  const {addToCart } = useContext(CarContext);
  
 
-const filteredProducts = query.trim() === "" 
-  ? null
+const filteredProducts = query.trim() === "" || query.toLowerCase() === "todos"
+  ? products
   : products.filter((product) =>
       product.name.toLowerCase().includes(query.toLowerCase()) ||
       product.category.toLowerCase().includes(query.toLowerCase()) ||
       product.description.toLowerCase().includes(query.toLowerCase())
     );
 
+     
+
   return (
     <div>
-      <h1 className="text-3xl text-center m-3 mb-8">ListProducts</h1>
+   
 
       {/* contenedor padre */}
       {filteredProducts && filteredProducts.length > 0 ? (
@@ -46,6 +50,7 @@ const filteredProducts = query.trim() === ""
               <p className="font-bold mb-2">$ {product.price}</p>
               <p className="text-sm">Stock: {product.stock}</p>
               <h3 className="text-green-600 font-semibold">Envio gratis</h3>
+              <button onClick={()=>addToCart(product)} className="hover:cursor-pointer border-2 rounded-lg p-2 w-full mt-4">Agregar al Carrito</button>
             </div>
           ))}
           

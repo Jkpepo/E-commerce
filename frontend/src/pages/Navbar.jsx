@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ProductsContext } from "../context/UseContext";
+import { ProductsContext } from "../context/UseProductsContext";
 import Filters from "../components/Filters";
 import { Link,useNavigate } from "react-router-dom";
 export const Navbar = () => {
@@ -13,10 +13,12 @@ const handleSubmit = (e) => {
     // Si no escribió nada, redirige al home
     navigate("/");
   } else {
-    // Si hay búsqueda, guarda y manda a listproducts
+    // Si hay búsqueda, guarda y manda a listproducts lo envia cuando hago click o enter en el formulario y lo envia a listproducts
+    //lo recibo desde el context como query y ya me trae el valor del search 
     setQuery(search);
     navigate("/listproducts");
   }
+
 };
   return (
     <div className="flex  mx-40 gap-10  justify-center  items-center h-16 ">
@@ -51,7 +53,9 @@ const handleSubmit = (e) => {
 
       <div className="w-lg  text-center  flex justify-around ">
         <i className="fa-regular fa-user"></i>
+        <Link to={"/car"}> 
         <i className="fa-solid fa-cart-shopping text-gray-700 hover:cursor-pointer "></i>
+        </Link>
       </div>
     </div>
   );

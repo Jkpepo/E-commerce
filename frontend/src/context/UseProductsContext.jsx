@@ -1,4 +1,4 @@
-import { createContext,useState,useEffect, use } from "react";
+import { createContext,useState,useEffect} from "react";
 
 export const ProductsContext= createContext();
 
@@ -6,6 +6,8 @@ export function ProductsProvider ({children}){
 
     const [products,setProducts]=useState([])
     const [search,setSearch]=useState("")
+    // este estado basicamente lo que me maneja es "una busqueda local " ya que si lo hago directamente cada que digite una tecla el estado de search va a cambiar
+    // y este me almacena lo que digite y me ayuda para controlar la busqueda
     const [query, setQuery] = useState("")
     const [category,setCategory]=useState("all")
 

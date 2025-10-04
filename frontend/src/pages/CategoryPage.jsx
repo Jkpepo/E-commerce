@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useContext } from "react"
-import { ProductsContext } from "../context/UseContext"
+import { ProductsContext } from "../context/UseProductsContext"
 
 export const CategoryPage = ()=>{
     const {category} = useParams()
@@ -9,8 +9,10 @@ export const CategoryPage = ()=>{
     const filteredProductsPage = products.filter((product)=>product.category.toLowerCase() === category.toLowerCase())
 
     return(
-        <div>
-            Categoria:{category}
+        <div className=" ">
+          <div className="flex flex-wrap justify-center gap-6">
+          
+     
             {filteredProductsPage.length >0 ?(
                 filteredProductsPage.map((product)=>(
                      <div
@@ -47,6 +49,8 @@ export const CategoryPage = ()=>{
                 <p> No Hay productos en esta categoria</p>
 
             )}
+              
+          </div>
         </div>
     )
 }

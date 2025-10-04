@@ -10,7 +10,7 @@ export const Layout = () => {
         <Navbar />
       </div>
       {/* main */}
-      <div className="flex-1 container mx-auto p-4 ">
+      <div className="flex-1 bg-gray-300 ">
         <Outlet />
       </div>
 
