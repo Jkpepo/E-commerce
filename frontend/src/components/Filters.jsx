@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { ProductsContext } from "../context/UseProductsContext";
 
 function Filters() {
-  const { category,setQuery,setCategory } = useContext(ProductsContext);
+  const {category,setQuery,setCategory } = useContext(ProductsContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {

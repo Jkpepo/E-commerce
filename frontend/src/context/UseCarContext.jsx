@@ -17,7 +17,7 @@ export function CarProvider({ children }) {
             : item
         );
       }
-      console.log("agregado");
+      
       // sino existe agrega el producto con una cantidad de 1
       return [...prev, { ...product, quantity: 1 }];
     });
