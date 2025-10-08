@@ -5,7 +5,7 @@ import { CarProvider } from "./context/UseCarContext";
 import { Layout } from "./pages/Layout";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
-import { Car } from "./components/Car";
+import { Cart } from "./components/Cart";
 function App() {
   return (
     <ProductsProvider>
@@ -16,7 +16,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path="/listproducts" element={<ListProducts />} />
               <Route path="/categoria/:category" element={<CategoryPage />} />
-              <Route path="/car" element={<Car />} />
+              <Route path="/car" element={<Cart />} />
             </Route>
           </Routes>
         </BrowserRouter>
