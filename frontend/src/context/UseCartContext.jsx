@@ -1,9 +1,11 @@
 import { createContext, useState } from "react";
 
-export const CarContext = createContext();
+export const CartContext = createContext();
 
-export function CarProvider({ children }) {
+export function CartProvider({ children }) {
   const [car, setCar] = useState([]);
+  console.log("carrito" + car.length);
+
   //Agregar productos al carro
 
   const addToCart = (product) => {
@@ -17,12 +19,12 @@ export function CarProvider({ children }) {
             : item
         );
       }
-      
+
       // sino existe agrega el producto con una cantidad de 1
       return [...prev, { ...product, quantity: 1 }];
     });
   };
-
+  // disminuir producto en el carrito
   const decrementProduct = (product) => {
     setCar((prev) => {
       return prev.map((item) =>
@@ -35,7 +37,7 @@ export function CarProvider({ children }) {
       );
     });
   };
-
+  // incrementar producto en el carrito
   const incrementProduct = (product) => {
     setCar((prev) => {
       return prev.map((item) =>
@@ -46,21 +48,42 @@ export function CarProvider({ children }) {
     });
   };
 
+  //eliminar producto carrito
   const cleanProduct = (id) => {
     setCar((prev) => prev.filter((item) => item._id !== id));
   };
 
+  // total items para que cada vez que agregue item me sume en el carrito y tambien si el producto lo pongo 2 o 3 veces
+  const totalItems = car.reduce((acc, item) => acc + item.quantity, 0);
+
+  // precio total * cantidad de producto
+  const totalPrice = car.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
+  // si el carrito esta vacio no cobra envio
+  const shipment = car.length === 0 ? 0 : totalPrice < 200 ? 1000 : 0;
+
+  // total + envio
+  const totalToPay = totalPrice + shipment;
+
   return (
-    <CarContext.Provider
+    <CartContext.Provider
       value={{
         addToCart,
         decrementProduct,
         car,
         incrementProduct,
         cleanProduct,
+        totalItems,
+        totalPrice,
+        shipment,
+        totalToPay
+        
       }}
     >
       {children}
-    </CarContext.Provider>
+    </CartContext.Provider>
   );
 }

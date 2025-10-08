@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import { CarContext } from "../context/UseCarContext";
+import { CartContext } from "../context/UseCartContext";
 
 export const CardOfCart = ({ product }) => {
   const { decrementProduct, incrementProduct, cleanProduct } =
-    useContext(CarContext);
-  console.log(product);
+    useContext(CartContext);
+
   return (
     <div className=" p-3 rounded-md shadow-xl bg-gray-200 flex justify-between items-center ">
       <img

@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import { CarContext } from "../context/UseCarContext";
+import { useContext } from "react";
+import { CartContext } from "../context/UseCartContext";
 
 export const ProductCard = ({product}) => {
-    const {addToCart}= useContext(CarContext)
+    const {addToCart}= useContext(CartContext)
   return (
     <div>
       ProductCard

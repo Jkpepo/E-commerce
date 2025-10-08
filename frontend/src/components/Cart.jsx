@@ -1,9 +1,10 @@
 import { useContext } from "react";
-import { CarContext } from "../context/UseCarContext";
+import { CartContext } from "../context/UseCartContext";
 import { CardOfCart } from "./CardOfCart";
+import { CartSummary } from "./CartSummary";
 
 export const Cart = () => {
-  const { car } = useContext(CarContext);
+  const { car } = useContext(CartContext);
 
   return (
     <div className=" min-h-screen py-10">
@@ -23,29 +24,7 @@ export const Cart = () => {
         </div>
 
         {/* Resumen de compra */}
-        <div className="w-1/3 h-fit  p-6 rounded-lg bg-white shadow-xl">
-          <h1 className="text-lg font-bold mb-4">Resumen de la compra</h1>
-          <hr />
-          <div className="flex justify-between mt-4">
-            <h2>
-              Productos <span className="text-gray-500">(12)</span>
-            </h2>
-            <p className="">$1.344.890</p>
-          </div>
-          <div className="flex justify-between mt-4">
-            <h2>
-              Envio <span className="text-gray-500">(12)</span>
-            </h2>
-            <p className="">$100.000</p>
-          </div>
-          <div className="flex justify-between mt-4 font-semibold text-lg">
-            <h1>Total</h1>
-            <p>$1.444.566</p>
-          </div>
-          <button className="mt-6 w-full bg-cyan-600 text-white py-2 rounded-lg hover:bg-cyan-700 transition cursor-pointer">
-            Continuar Compra
-          </button>
-        </div>
+        <CartSummary />
       </div>
     </div>
   );
