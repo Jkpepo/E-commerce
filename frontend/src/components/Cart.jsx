@@ -18,7 +18,7 @@ export const Cart = () => {
                 <CardOfCart key={product._id} product={product} />
               ))
             ) : (
-              <h1>no hay productos</h1>
+              <h1>no tienes productos aun en tu carrito</h1>
             )}
           </div>
         </div>

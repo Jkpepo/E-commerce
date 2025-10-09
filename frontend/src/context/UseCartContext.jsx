@@ -67,6 +67,10 @@ export function CartProvider({ children }) {
 
   // total + envio
   const totalToPay = totalPrice + shipment;
+  // formateo para los valores de precio se vean mejor con sus puntos o comas en moneda Colombiana
+
+  const formatPrice = (value) =>
+  value.toLocaleString("en-US", { style: "currency", currency: "USD" });
 
   return (
     <CartContext.Provider
@@ -79,7 +83,8 @@ export function CartProvider({ children }) {
         totalItems,
         totalPrice,
         shipment,
-        totalToPay
+        totalToPay,
+        formatPrice
         
       }}
     >

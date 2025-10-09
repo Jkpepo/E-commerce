@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { CartContext } from "../context/UseCartContext";
 
 export const CartSummary = () => {
-  const { totalItems,totalPrice,shipment,totalToPay } = useContext(CartContext);
+  const { totalItems,totalPrice,shipment,totalToPay,formatPrice } = useContext(CartContext);
 
 
   return (
@@ -13,17 +13,17 @@ export const CartSummary = () => {
         <h2>
           Productos <span className="text-gray-500">({totalItems})</span>
         </h2>
-        <p className="">${totalPrice}</p>
+        <p className="">{formatPrice(totalPrice)}</p>
       </div>
       <div className="flex justify-between mt-4">
         <h2>
           Envio <span className="text-gray-500"></span>
         </h2>
-        <p className="">${shipment}</p>
+        <p className="">{formatPrice(shipment)}</p>
       </div>
       <div className="flex justify-between mt-4 font-semibold text-lg">
         <h1>Total</h1>
-        <p>${totalToPay}</p>
+        <p>{formatPrice(totalToPay)}</p>
       </div>
       <button className="mt-6 w-full bg-cyan-600 text-white py-2 rounded-lg hover:bg-cyan-700 transition cursor-pointer">
         Continuar Compra

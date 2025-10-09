@@ -2,10 +2,10 @@ import { useContext } from "react";
 import { CartContext } from "../context/UseCartContext";
 
 export const ProductCard = ({product}) => {
-    const {addToCart}= useContext(CartContext)
+    const {addToCart,formatPrice}= useContext(CartContext)
   return (
-    <div>
-      ProductCard
+    <div className="mt-10">
+      
       <div className="border-2 border-amber-700 w-[300px] min-h-[320px] p-4 rounded-md shadow-md bg-white m-2">
         {/* Imagen */}
         <div className="flex justify-center mb-3">
@@ -24,7 +24,7 @@ export const ProductCard = ({product}) => {
         <p className="text-sm text-gray-500 mb-2">
           Categoría: {product.category}
         </p>
-        <p className="font-bold mb-2">$ {product.price}</p>
+        <p className="font-bold mb-2">{formatPrice(product.price)}</p>
         <p className="text-sm">Stock: {product.stock}</p>
         <h3 className="text-green-600 font-semibold">Envio gratis</h3>
         <button
