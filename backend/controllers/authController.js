@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import Users from "../models/Users.js";
 
 
-const JWT_SECRET = process.env.JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 
 // registro
 
@@ -11,7 +11,7 @@ export const register = async (req,res)=>{
     try{
         const {name,email,password,role}=req.body;
         const userExist = await Users.findOne({email});
-        if (userExist) return res.status(400).json({message:"el usuario ya existe"});
+        if(userExist) return res.status(400).json({message:"el usuario ya existe"});
 
         const hashedPassword = await bcrypt.hash(password,10);
         const newUser = await Users.create({name,email,password:hashedPassword,role});
@@ -51,7 +51,7 @@ export const login = async(req,res)=>{
     }
 };
 
-//Perfil (quiere token)
+//Perfil (requiere token)
 
 export const getProfile = async(req,res)=>{
     try{

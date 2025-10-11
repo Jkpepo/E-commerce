@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import productsRoutes from "./routes/ProductsRoutes.js";
+import authRoutes from "./routes/AuthRoutes.js";
+
 
 dotenv.config();
 
@@ -19,7 +21,7 @@ app.get("/",(req,res)=>{
 
 //Middleware de productos 
 app.use("/api/products",productsRoutes);
-
+app.use("/api/auth", authRoutes);
 
 //conectar con MongoDB
 
