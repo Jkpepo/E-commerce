@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 // Middlewares
 app.use(cors());
-app.use(express.json());
+app.use(express.json());// para leer datos del body
 // Ruta base de prueba
 
 app.get("/",(req,res)=>{

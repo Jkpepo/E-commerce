@@ -18,7 +18,7 @@ export const register = async (req,res)=>{
          res.status(201).json({message:"Usuario creado con exito",user:newUser});
 
     }catch (error){
-        res.status(500).json({message:message.error})
+        res.status(500).json({message:error.message})
 
     }
 }
@@ -27,12 +27,13 @@ export const register = async (req,res)=>{
 export const login = async(req,res)=>{
     try{
         const {email,password}=req.body;
+        // busco el usuario por el email
         const user = await Users.findOne({email});
          if(!user) return res.status(404).json({message:"Usuario no encontrado"});
-
+            // comparo la contraseñas 
          const isValid = await bcrypt.compare(password,user.password);
          if(!isValid) return res.status(400).json({message:"Contraseña incorrecta"});
-
+            // con esto genero el token
          const token= jwt.sign(
             {id:user._id,role:user.role},
             JWT_SECRET,
