@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
+  console.log("usuario",user)
 
   // si hay token guardado, recupera el usuario del backend (opcional)
   useEffect(() => {
@@ -68,8 +69,29 @@ export const AuthProvider = ({ children }) => {
 
   }
 
+  const profile =async()=>{
+    try{
+      const res =await fetch("http://localhost:5000/api/auth/profile",{
+         headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+
+      });
+      if(!res.ok) throw new Error("Error al obtener el perfil")
+        const data = await res.json()
+      setUser(data)
+      localStorage.setItem("user",JSON.stringify(data))
+      console.log("localstorager",localStorage)
+      return data
+    }catch(error){
+      console.error(message.error)
+
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout,register }}>
+    <AuthContext.Provider value={{ user, token, login, logout,register,profile }}>
       {children}
     </AuthContext.Provider>
   );
