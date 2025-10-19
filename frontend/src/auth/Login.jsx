@@ -1,11 +1,13 @@
 import { useContext, useState } from "react"
 import { AuthContext } from "../context/AuthContext"
+import { useNavigate } from "react-router-dom"
 
 export const Login = () => {
   const {login} = useContext(AuthContext)
 const [formRegister,setFormRegister]=useState({email:"",password:""})
 
 const {email,password}=formRegister
+const navigate=useNavigate()
 
 const handleChange  = (e)=>{
   setFormRegister({...formRegister,[e.target.name]:e.target.value})
@@ -15,11 +17,9 @@ const handleChange  = (e)=>{
     e.preventDefault();
 
     const loginValid = await login(email,password)
-    if (loginValid){
-      console.log("login con exito")
-    }else{
-      console.error("error en el login")
-    }
+    if (loginValid) navigate("/")
+    else console.error("error en el login")
+    
   }
 
 

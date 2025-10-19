@@ -1,14 +1,24 @@
-import { createContext, useState } from "react";
+import { createContext, useState,useContext } from "react";
+import { AuthContext } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const CartContext = createContext();
 
+
 export function CartProvider({ children }) {
+  const {user}=useContext(AuthContext)
   const [car, setCar] = useState([]);
-  console.log("carrito" + car.length);
+  const navigate =useNavigate();
+
 
   //Agregar productos al carro
 
   const addToCart = (product) => {
+    if(!user){
+      navigate("/login")
+      return
+
+    }
     setCar((prev) => {
       // find me ayuda a encontrar el elemento que coincida, si ya existe le aumenta +1 a la cantidad
       const itemFound = prev.find((item) => item._id === product._id);

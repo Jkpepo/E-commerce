@@ -9,26 +9,29 @@ import { Home } from "./pages/Home";
 import { Cart } from "./components/Cart";
 import { Register } from "./auth/Register";
 import { Login } from "./auth/Login";
+import { Profile } from "./auth/Profile";
+import { ProtectedRoute } from "./routes/ProtectedRoute";
 function App() {
   return (
-    <ProductsProvider>
-      <CartProvider>
-        <AuthProvider>
-          <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
+        <ProductsProvider>
+          <CartProvider>
             <Routes>
               <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
                 <Route path="/listproducts" element={<ListProducts />} />
                 <Route path="/categoria/:category" element={<CategoryPage />} />
-                <Route path="/car" element={<Cart />} />
+                <Route path="/car" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               </Route>
             </Routes>
-          </BrowserRouter>
-        </AuthProvider>
-      </CartProvider>
-    </ProductsProvider>
+          </CartProvider>
+        </ProductsProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

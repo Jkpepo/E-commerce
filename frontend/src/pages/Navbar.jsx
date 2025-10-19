@@ -1,25 +1,24 @@
-import { useContext } from "react";
 import { ProductsContext } from "../context/UseProductsContext";
+import { Link, useNavigate } from "react-router-dom";
 import Filters from "../components/Filters";
-import { Link,useNavigate } from "react-router-dom";
+import { useContext } from "react";
 export const Navbar = () => {
-  const { search, setSearch,setQuery} = useContext(ProductsContext);
+  const { search, setSearch, setQuery } = useContext(ProductsContext);
   const navigate = useNavigate();
 
-const handleSubmit = (e) => {
-  e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  if (search.trim() === "") {
-    // Si no escribió nada, redirige al home
-    navigate("/");
-  } else {
-    // Si hay búsqueda, guarda y manda a listproducts lo envia cuando hago click o enter en el formulario y lo envia a listproducts
-    //lo recibo desde el context como query y ya me trae el valor del search 
-    setQuery(search);
-    navigate("/listproducts");
-  }
-
-};
+    if (search.trim() === "") {
+      // Si no escribió nada, redirige al home
+      navigate("/");
+    } else {
+      // Si hay búsqueda, guarda y manda a listproducts lo envia cuando hago click o enter en el formulario y lo envia a listproducts
+      //lo recibo desde el context como query y ya me trae el valor del search
+      setQuery(search);
+      navigate("/listproducts");
+    }
+  };
   return (
     <div className="flex  mx-40 gap-10  justify-center  items-center h-16 ">
       <div className="w-xs ">
@@ -43,7 +42,6 @@ const handleSubmit = (e) => {
           <button
             type="submit"
             className=" h-9 pl-4 pr-4  bg-white hover:cursor-pointer text-white"
-            
           >
             <i className="fa fa-search  text-gray-400 "></i>
           </button>
@@ -52,9 +50,11 @@ const handleSubmit = (e) => {
       <Filters />
 
       <div className="w-lg  text-center  flex justify-around ">
-        <i className="fa-regular fa-user"></i>
-        <Link to={"/car"}> 
-        <i className="fa-solid fa-cart-shopping text-gray-700 hover:cursor-pointer "></i>
+        <Link to={"/profile"}>
+          <i className="fa-regular fa-user"></i>
+        </Link>
+        <Link to={"/car"}>
+          <i className="fa-solid fa-cart-shopping text-gray-700 hover:cursor-pointer "></i>
         </Link>
       </div>
     </div>
