@@ -30,20 +30,20 @@ export const Navbar = () => {
       <div className=" w-full">
         <form
           onSubmit={handleSubmit}
-          className=" w-full flex text-zinc-70 pl-10"
+          className=" w-full flex text-zinc-70 pl-10 "
         >
           <input
             type="text"
             value={search}
             placeholder="Buscar productos, marcas y más..."
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full  bg-white  focus:outline-none border-r-1 border-zinc-300 pl-4"
+            className="w-full p-1.5 bg-gray-900 focus:outline-none border-r-1 shadow-[0_0_20px_rgba(56,189,248,0.2)] backdrop-blur-md text-[#00ffff] transition-all duration-300 hover:shadow-cyan-400/40"
           />
           <button
             type="submit"
-            className=" h-9 pl-4 pr-4  bg-white hover:cursor-pointer text-white"
+            className=" h-9 pl-4 pr-4 bg-gray-900 shadow-[0_0_20px_rgba(56,189,248,0.2)] backdrop-blur-md text-[#00ffff] transition-all duration-300 hover:shadow-cyan-400/40 hover:cursor-pointer"
           >
-            <i className="fa fa-search  text-gray-400 "></i>
+            <i className="fa fa-search  text-[#00ffff] "></i>
           </button>
         </form>
       </div>
@@ -51,10 +51,10 @@ export const Navbar = () => {
 
       <div className="w-lg  text-center  flex justify-around ">
         <Link to={"/profile"}>
-          <i className="fa-regular fa-user"></i>
+          <i className="fa-regular fa-user shadow-[0_0_20px_rgba(56,189,248,0.2)] backdrop-blur-md text-[#00ffff] transition-all duration-300 hover:shadow-cyan-400/80"></i>
         </Link>
         <Link to={"/car"}>
-          <i className="fa-solid fa-cart-shopping text-gray-700 hover:cursor-pointer "></i>
+          <i className="fa-solid fa-cart-shopping  shadow-[0_0_20px_rgba(56,189,248,0.2)] backdrop-blur-md text-[#00ffff] transition-all duration-300 hover:shadow-cyan-400/80"></i>
         </Link>
       </div>
     </div>

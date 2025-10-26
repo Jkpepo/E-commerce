@@ -4,20 +4,20 @@ import { Navbar } from "./Navbar";
 export const Layout = () => {
   return (
     // padre
-    <div className="bg-gray-200  min-h-screen flex flex-col  ">
+    <div className=" min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-gray-800 to-black text-gray-100 ">
       {/* Navabar */}
-      <div className=" shadow-xl/7  ">
+      <header className="backdrop-blur-md bg-gray-800 border-b border-white/10 shadow-lg sticky top-0 z-50">
         <Navbar />
-      </div>
+      </header>
       {/* main */}
-      <div className="flex-1 bg-gray-300 ">
+      <main className=" flex-1 p-6 sm:p-10">
         <Outlet />
-      </div>
+      </main >
 
       {/* footer */}
-      <div className="h-40 bg-gray-300 ">
-        <div className="ml-20">footer</div>
-      </div>
+       <footer className="h-32 bg-white/10 border-t border-white/10 flex items-center justify-center text-sm text-gray-400">
+        <p>© 2025 TechStore — Todos los derechos reservados</p>
+      </footer>
     </div>
   );
 };

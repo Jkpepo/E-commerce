@@ -7,18 +7,18 @@ export const Cart = () => {
   const { car } = useContext(CartContext);
 
   return (
-    <div className=" min-h-screen py-10">
-      <div className="max-w-6xl mx-auto h-full flex gap-10 p-6">
-        <div className="w-2/3 h-full shadow-2xl rounded-lg p-4 bg-white">
-          <h1 className="text-xl font-bold mb-4">Tus productos</h1>
-          <div className="flex flex-col gap-4">
+    <div className="min-h-screen py-10 bg-[#0f172a] text-[#f8fafc]">
+      <div className="max-w-6xl mx-auto h-full flex flex-col md:flex-row gap-10 p-6">
+        <div className="w-full md:w-2/3 shadow-2xl rounded-2xl p-6 bg-[#1e293b] border border-[#334155] backdrop-blur-md transition-all duration-300 hover:shadow-blue-500/30">
+          <h1 className="text-2xl font-bold mb-6 text-[#22d3ee] tracking-wide">Tus productos</h1>
+          <div className="flex flex-col gap-4 ">
             {/* Productos del carro */}
             {car && car.length > 0 ? (
               car.map((product) => (
                 <CardOfCart key={product._id} product={product} />
               ))
             ) : (
-              <h1>no tienes productos aun en tu carrito</h1>
+              <h1 className="text-gray-400 text-center italic">no tienes productos aun en tu carrito</h1>
             )}
           </div>
         </div>

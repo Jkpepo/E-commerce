@@ -20,12 +20,12 @@ const filteredProducts = query.trim() === "" || query.toLowerCase() === "todos"
      
 
   return (
-    <div>
+    <div >
    
 
       {/* contenedor padre */}
       {filteredProducts && filteredProducts.length > 0 ? (
-        <div className="flex flex-wrap justify-center gap-6">
+        <div className="flex flex-wrap justify-center gap-10">
           {filteredProducts.map((product) => (
           <ProductCard key={product._id} product={product}/>
           ))}
