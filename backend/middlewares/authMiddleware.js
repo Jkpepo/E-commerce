@@ -10,6 +10,7 @@ export const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
+     console.log("Decoded JWT:", decoded); 
     req.user = decoded; //contiene el {id,role}
     next();
   } catch (error) {
