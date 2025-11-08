@@ -7,7 +7,7 @@ export const CategoryPage = ()=>{
     const {category} = useParams()
     const {products} = useContext(ProductsContext)
 
-    const filteredProductsPage = products.filter((product)=>product.category.toLowerCase() === category.toLowerCase())
+    const filteredProductsPage = products.filter((product)=>product.category?.toLowerCase() === category.toLowerCase())
 
     return(
         <div className=" ">
