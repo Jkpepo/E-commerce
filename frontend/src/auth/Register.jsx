@@ -1,8 +1,11 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Navigate } from "react-router-dom";
 
 export const Register = () => {
+  const { user } = useContext(AuthContext);
+
+  if (user) return <Navigate to="/profile" replace />;
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
 
