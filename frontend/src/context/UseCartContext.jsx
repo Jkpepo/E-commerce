@@ -1,6 +1,7 @@
 import { createContext, useState,useContext } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
+import { CartModal } from "../components/CartModal";
 
 export const CartContext = createContext();
 
@@ -8,6 +9,8 @@ export const CartContext = createContext();
 export function CartProvider({ children }) {
   const {user}=useContext(AuthContext)
   const [car, setCar] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [recentProduct, setRecentProduct] = useState(null);
   const navigate =useNavigate();
 
 
@@ -27,12 +30,16 @@ export function CartProvider({ children }) {
           item._id === product._id
             ? { ...item, quantity: item.quantity + 1 }
             : item
-        );
-      }
+          );
+        }
+       
 
       // sino existe agrega el producto con una cantidad de 1
+      
       return [...prev, { ...product, quantity: 1 }];
     });
+    setRecentProduct(product);
+    setIsCartOpen(true);
   };
   // disminuir producto en el carrito
   const decrementProduct = (product) => {
@@ -94,11 +101,22 @@ export function CartProvider({ children }) {
         totalPrice,
         shipment,
         totalToPay,
-        formatPrice
+        formatPrice,
+        isCartOpen,
+        setIsCartOpen
         
       }}
     >
       {children}
+
+       {isCartOpen && recentProduct && (
+    <CartModal 
+    recentProduct={recentProduct} 
+    onClose={()=> setIsCartOpen(false)}
+    formatPrice={formatPrice}
+    
+     />
+  )}
     </CartContext.Provider>
   );
 }
