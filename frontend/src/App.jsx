@@ -12,6 +12,7 @@ import { Login } from "./auth/Login";
 import { Profile } from "./auth/Profile";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { CreateProduct } from "./components/CreateProduct";
+import { ProductById } from "./components/ProductById";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
                 <Route path="/listproducts" element={<ListProducts />} />
+                <Route path="/product/:id" element={<ProductById />} />
                 <Route path="/categoria/:category" element={<CategoryPage />} />
                 <Route path="/car" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
                 <Route path="/register" element={<Register />} />

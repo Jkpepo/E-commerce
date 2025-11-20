@@ -7,12 +7,14 @@ export function ProductsProvider({ children }) {
   const { token } =useContext(AuthContext)
 
   const [products, setProducts] = useState([]);
+  const [product, setProduct] = useState(null);
   const [search, setSearch] = useState("");
   // este estado basicamente lo que me maneja es "una busqueda local " ya que si lo hago directamente cada que digite una
   // tecla el estado de search va a cambiar
   // y este me almacena lo que digite y me ayuda para controlar la busqueda
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
+  const [error,setError]=useState(null)
 
   const BASE_URL = "http://localhost:5000/api/products/";
 
@@ -29,6 +31,27 @@ export function ProductsProvider({ children }) {
     fetchProducts();
   }, []);
 
+
+  const getProductById=async(id)=>{
+    
+    try{
+      setProduct(null);     
+      setError(null);
+      const result =await fetch(`${BASE_URL}${id}`)
+      if (!result.ok) {
+        setError("dato no encontrado")
+     
+   }
+      const data= await result.json()
+      setProduct(data)
+    
+
+    }catch(error){
+      console.log(error)
+
+    }
+  }
+
   const createProduct = async (
     name,
     price,
@@ -39,7 +62,7 @@ export function ProductsProvider({ children }) {
     image
   ) => {
     try {
-      const result = await fetch("http://localhost:5000/api/products/", {
+      const result = await fetch(BASE_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,6 +98,9 @@ export function ProductsProvider({ children }) {
         query,
         setQuery,
         createProduct,
+        getProductById,
+        product,
+        error
       }}
     >
       {children}
