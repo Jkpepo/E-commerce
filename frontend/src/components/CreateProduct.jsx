@@ -1,8 +1,9 @@
 import { useContext } from "react";
 import { ProductsContext } from "../context/UseProductsContext";
 import { useState } from "react";
-
+import { AuthContext } from "../context/AuthContext";
 export const CreateProduct = () => {
+  const { user } = useContext(AuthContext);
   const { createProduct } = useContext(ProductsContext);
   const [formProduct, setFormProduct] = useState({
     name: "",
@@ -13,7 +14,11 @@ export const CreateProduct = () => {
     description: "",
   });
   const { name, price, stock, quantity, category, description } = formProduct;
+  if (user?.role == "comprador"){
+   return <h1>NO puedes crear productos eres comprador</h1>
 
+   
+  }
   const handleChange = (e) => {
     setFormProduct({ ...formProduct, [e.target.name]: e.target.value });
   };

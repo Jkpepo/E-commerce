@@ -1,4 +1,4 @@
-import { createContext, useState,useContext } from "react";
+import { createContext, useState,useContext, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
 import { CartModal } from "../components/CartModal";
@@ -6,40 +6,78 @@ import { CartModal } from "../components/CartModal";
 export const CartContext = createContext();
 
 
+
 export function CartProvider({ children }) {
-  const {user}=useContext(AuthContext)
+  const {user,token}=useContext(AuthContext)
   const [car, setCar] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [recentProduct, setRecentProduct] = useState(null);
   const navigate =useNavigate();
 
+useEffect(() => {
+  const fetchCart = async () => {
+    if (!user || !token) return;
+
+    try {
+      const res = await fetch("http://localhost:5000/api/cart", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+      setCar(data.cart || []);
+    } catch (error) {
+      console.log("Error al cargar el carrito:", error);
+    }
+  };
+
+  fetchCart();
+}, [user, token]);
 
   //Agregar productos al carro
 
-  const addToCart = (product) => {
+
+
+  const addToCart = async (product) => {
+
     if(!user){
       navigate("/login")
       return
-
     }
-    setCar((prev) => {
-      // find me ayuda a encontrar el elemento que coincida, si ya existe le aumenta +1 a la cantidad
-      const itemFound = prev.find((item) => item._id === product._id);
-      if (itemFound) {
-        return prev.map((item) =>
-          item._id === product._id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-          );
-        }
+    try {
+      const res= await fetch("http://localhost:5000/api/cart/addcart",{
+        method:"POST",
+        headers:{"Content-Type":"application/json",
+          Authorization:`Bearer ${token}`,
+        },
+        body:JSON.stringify({productId:product._id}),
+      })
+      const data = await res.json();
+      console.log("datos",data.cart)
+      setCar(data.cart)
+      setRecentProduct(product);
+      setIsCartOpen(true);
+      return data 
+    } catch (error) {
+      console.log(error)
+    }
+    // setCar((prev) => {
+    //   // find me ayuda a encontrar el elemento que coincida, si ya existe le aumenta +1 a la cantidad
+    //   const itemFound = prev.find((item) => item._id === product._id);
+    //   if (itemFound) {
+    //     return prev.map((item) =>
+    //       item._id === product._id
+    //         ? { ...item, quantity: item.quantity + 1 }
+    //         : item
+    //       );
+    //     }
        
 
       // sino existe agrega el producto con una cantidad de 1
       
-      return [...prev, { ...product, quantity: 1 }];
-    });
-    setRecentProduct(product);
-    setIsCartOpen(true);
+    //   return [...prev, { ...product, quantity: 1 }];
+    // });
   };
   // disminuir producto en el carrito
   const decrementProduct = (product) => {
@@ -71,19 +109,19 @@ export function CartProvider({ children }) {
   };
 
   // total items para que cada vez que agregue item me sume en el carrito y tambien si el producto lo pongo 2 o 3 veces
-  const totalItems = car.reduce((acc, item) => acc + item.quantity, 0);
+  // const totalItems = car.reduce((acc, item) => acc + item.quantity, 0);
 
   // precio total * cantidad de producto
-  const totalPrice = car.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  // const totalPrice = car.reduce(
+  //   (acc, item) => acc + item.price * item.quantity,
+  //   0
+  // );
 
   // si el carrito esta vacio no cobra envio
-  const shipment = car.length === 0 ? 0 : totalPrice < 200 ? 1000 : 0;
+  // const shipment = car.length === 0 ? 0 : totalPrice < 200 ? 1000 : 0;
 
-  // total + envio
-  const totalToPay = totalPrice + shipment;
+  // // total + envio
+  // const totalToPay = totalPrice + shipment;
   // formateo para los valores de precio se vean mejor con sus puntos o comas en moneda Colombiana
 
   const formatPrice = (value) =>
@@ -97,10 +135,10 @@ export function CartProvider({ children }) {
         car,
         incrementProduct,
         cleanProduct,
-        totalItems,
-        totalPrice,
-        shipment,
-        totalToPay,
+        // totalItems,
+        // totalPrice,
+        // shipment,
+        // totalToPay,
         formatPrice,
         isCartOpen,
         setIsCartOpen

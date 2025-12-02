@@ -1,10 +1,12 @@
-import { useContext } from "react";
+import { useContext,useEffect } from "react";
 import { CartContext } from "../context/UseCartContext";
 import { CardOfCart } from "./CardOfCart";
 import { CartSummary } from "./CartSummary";
 
 export const Cart = () => {
   const { car } = useContext(CartContext);
+  console.log("carrito",car)
+
 
   return (
     <div className="min-h-screen py-10 bg-[#0f172a] text-[#f8fafc]">
@@ -14,7 +16,7 @@ export const Cart = () => {
           <div className="flex flex-col gap-4 ">
             {/* Productos del carro */}
             {car && car.length > 0 ? (
-              car.map((product) => (
+              car.map((product ) => (
                 <CardOfCart key={product._id} product={product} />
               ))
             ) : (
