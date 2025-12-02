@@ -3,7 +3,7 @@ import Product  from '../models/Products.js';
 import { validateObjectId } from '../utils/ValidateObjectId.js';
 
 
-const router = express.Router();
+
 
 
 // GET -> Listar los productos
@@ -97,4 +97,3 @@ export const deleteProduct =("/:id", async (req,res)=>{
 
 
 
-export default router

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import productsRoutes from "./routes/ProductsRoutes.js";
 import authRoutes from "./routes/AuthRoutes.js";
+import cartRoutes from "./routes/CartRoutes.js"
 
 
 dotenv.config();
@@ -22,6 +23,8 @@ app.get("/",(req,res)=>{
 //Middleware de productos 
 app.use("/api/products",productsRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/cart",cartRoutes );
+
 
 //conectar con MongoDB
 
