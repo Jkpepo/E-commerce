@@ -27,7 +27,7 @@ export const CardOfCart = ({ product }) => {
         {product.quantity <= 1 ? (
           <button
             className="bg-red-500/80 hover:bg-red-600 text-white rounded-full px-3 py-1 shadow-[0_0_10px_rgba(239,68,68,0.6)] transition-all hover:cursor-pointer"
-            onClick={() => cleanProduct(product.productId._id)}
+            onClick={() => cleanProduct(product)}
           >
             X
           </button>

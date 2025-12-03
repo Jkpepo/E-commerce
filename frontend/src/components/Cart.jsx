@@ -17,7 +17,7 @@ export const Cart = () => {
             {/* Productos del carro */}
             {car && car.length > 0 ? (
               car.map((product ) => (
-                <CardOfCart key={product._id} product={product} />
+                <CardOfCart key={product.productId._id} product={product} />
               ))
             ) : (
               <h1 className="text-gray-400 text-center italic">no tienes productos aun en tu carrito</h1>

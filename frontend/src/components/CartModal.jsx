@@ -19,9 +19,9 @@ export const CartModal = ({ recentProduct, onClose,formatPrice}) => {
             <p className="font-semibold">{recentProduct.name}</p>
             <p className="font-semibold">{recentProduct.category}</p>
       
-            <p className="text-gray-400 text-sm"> {formatPrice(recentProduct.price)}
+            {/* <p className="text-gray-400 text-sm"> {formatPrice(recentProduct.price)} */}
               
-            </p>
+            {/* </p> */}
           </div>
         </div>
 

@@ -30,7 +30,7 @@ export const ProductCard = ({product}) => {
         <p className="flex justify-between text-sm text-gray-400 mb-2">
           Categoría: {product.category}
         </p>
-        <p className="font-bold text-lg text-white mb-1">{formatPrice(product.price)}</p>
+        {/* <p className="font-bold text-lg text-white mb-1">{formatPrice(product.price)}</p> */}
         <p className="text-sm">Stock: {product.stock}</p>
         <h3 className="text-emerald-400 text-sm font-medium">Envio gratis</h3>
         <button
