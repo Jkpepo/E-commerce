@@ -2,6 +2,7 @@
 export const CartModal = ({ recentProduct, onClose,formatPrice}) => {
    
       if (!recentProduct) return null;
+      console.log("precio",recentProduct.price)
   return (
   <div className="fixed   inset-0 bg-black/80 flex justify-end z-50 ">
       <div className="bg-[#1e293b] p-6 m-8 rounded-xl shadow-2xl border border-cyan-400/40 w-[70%] max-w-sm h-[250px] text-white ">
@@ -19,9 +20,9 @@ export const CartModal = ({ recentProduct, onClose,formatPrice}) => {
             <p className="font-semibold">{recentProduct.name}</p>
             <p className="font-semibold">{recentProduct.category}</p>
       
-            {/* <p className="text-gray-400 text-sm"> {formatPrice(recentProduct.price)} */}
+            <p className="text-gray-400 text-sm"> {formatPrice(recentProduct.price)}
               
-            {/* </p> */}
+            </p>
           </div>
         </div>
 

@@ -12,6 +12,12 @@ export function CartProvider({ children }) {
   const [car, setCar] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [recentProduct, setRecentProduct] = useState(null);
+  const [totals, setTotals] = useState({
+  totalItems: 0,
+  totalPrice: 0,
+  shipment: 0,
+  totalToPay: 0,
+});
   const navigate =useNavigate();
 
 useEffect(() => {
@@ -27,6 +33,7 @@ useEffect(() => {
 
       const data = await res.json();
       setCar(data.cart || []);
+      setTotals(data.totals);
     } catch (error) {
       console.log("Error al cargar el carrito:", error);
     }
@@ -56,6 +63,7 @@ useEffect(() => {
       const data = await res.json();
       console.log("datos",data.cart)
       setCar(data.cart)
+      setTotals(data.totals);
       setRecentProduct(product);
       setIsCartOpen(true);
       return data 
@@ -111,6 +119,7 @@ const decrementProduct = async (product) => {
       const data = await res.json();
       console.log("datos",data.cart)
       setCar(data.cart)
+      setTotals(data.totals);
 
       return data 
     } catch (error) {
@@ -148,6 +157,7 @@ const incrementProduct = async (product) => {
       const data = await res.json();
       console.log("datos",data.cart)
       setCar(data.cart)
+      setTotals(data.totals);
 
       return data 
     } catch (error) {
@@ -186,6 +196,7 @@ const incrementProduct = async (product) => {
       const data = await res.json();
       console.log("datos",data.cart)
       setCar(data.cart)
+      setTotals(data.totals);
 
       return data 
     } catch (error) {
@@ -209,9 +220,11 @@ const incrementProduct = async (product) => {
   // const totalToPay = totalPrice + shipment;
   // formateo para los valores de precio se vean mejor con sus puntos o comas en moneda Colombiana
 
-  // const formatPrice = (value) =>
-  // value.toLocaleString("en-US", { style: "currency", currency: "USD" });
-
+  const formatPrice = (value = 0) =>
+  Number(value).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
   return (
     <CartContext.Provider
       value={{
@@ -220,11 +233,12 @@ const incrementProduct = async (product) => {
         car,
         incrementProduct,
         cleanProduct,
+        totals,
         // totalItems,
         // totalPrice,
         // shipment,
         // totalToPay,
-        // formatPrice,
+        formatPrice,
         isCartOpen,
         setIsCartOpen
         
@@ -236,7 +250,7 @@ const incrementProduct = async (product) => {
     <CartModal 
     recentProduct={recentProduct} 
     onClose={()=> setIsCartOpen(false)}
-    // formatPrice={formatPrice}
+    formatPrice={formatPrice}
     
      />
   )}

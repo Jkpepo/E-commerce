@@ -54,7 +54,7 @@ export const CardOfCart = ({ product }) => {
 
       {/* Precio */}
       <p className="text-right font-semibold text-indigo-400">
-        {/* {formatPrice(product.productId.precio)} */}
+        {formatPrice(product.productId.price)}
       </p>
     </div>
   );
