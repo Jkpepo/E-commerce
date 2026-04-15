@@ -2,6 +2,9 @@ import { useContext } from "react";
 import { ProductsContext } from "../context/UseProductsContext";
 import { useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
+
 export const CreateProduct = () => {
   const { user } = useContext(AuthContext);
   const { createProduct } = useContext(ProductsContext);
@@ -13,6 +16,7 @@ export const CreateProduct = () => {
     category: "",
     description: "",
   });
+  const navigate = useNavigate()
   const { name, price, stock, quantity, category, description } = formProduct;
   if (user?.role == "comprador"){
    return <h1>NO puedes crear productos eres comprador</h1>
@@ -33,7 +37,9 @@ export const CreateProduct = () => {
       description
     );
     if (productValid) {
+      
       console.log("producto agregado", productValid);
+      navigate ("/listproducts")
     }
   };
   return (

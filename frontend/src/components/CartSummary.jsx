@@ -2,15 +2,16 @@ import { useContext } from "react";
 import { CartContext } from "../context/UseCartContext";
 
 export const CartSummary = () => {
-  const { totals,formatPrice } = useContext(CartContext);
+  const { totals={},formatPrice } = useContext(CartContext);
   
   const {
-  totalItems = 0,
-  totalPrice = 0,
-  shipment = 0,
-  totalToPay = 0
-} = totals;
-
+    totalItems = 0,
+    totalPrice = 0,
+    shipment = 0,
+    totalToPay = 0
+  } = totals;
+  
+console.log(totalItems)
 
 
   return (

@@ -10,11 +10,14 @@ export const CardOfCart = ({ product }) => {
 
       {/* Imagen */}
       <div className="flex justify-center">
-        <img
+       
+          
+          <img
           className="w-[80px] h-[80px] object-contain drop-shadow-[0_0_8px_rgba(139,92,246,0.4)]"
-          src={product.productId.image}
+          src={product.productId.image || "/logo_png.png"}
           alt={product.productId.name}
-        />
+          />
+       
       </div>
 
       {/* Nombre */}
