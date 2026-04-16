@@ -1,34 +1,35 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate,Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export const Register = () => {
-  const { user } = useContext(AuthContext);
 
-  if (user) return <Navigate to="/profile" replace />;
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [FormData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     role: "",
   });
-  const { name, email, password, role } = FormData;
+  const { name, email, password, role } = formData;
 
   const handleChange = (e) => {
-    setFormData({ ...FormData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const success = await register(name, email, password, role);
-    if (success) {
+    const result = await register(name, email, password, role);
+    if (result.user) {
+      toast.success(`Registro creado con exíto ${result.user?.name || ""}`);
       console.log("Registro Correcto");
-      navigate("/");
+      navigate("/login");
     } else {
+      toast.error(result.error);
       console.error("Error al registrar");
     }
   };
