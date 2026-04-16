@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
-      console.log(data)
+      // console.log(data)
 
       if (!res.ok) throw new Error(data.msg || "Error en el login");
 
@@ -33,10 +33,10 @@ export const AuthProvider = ({ children }) => {
 
       setToken(data.token);
       setUser(data.user);
-      return true;
+      return data.user;
     } catch (error) {
       console.error(error);
-      return false;
+      return null;
     }
   };
 
