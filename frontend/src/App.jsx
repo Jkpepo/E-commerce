@@ -13,9 +13,10 @@ import { Profile } from "./auth/Profile";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { CreateProduct } from "./components/CreateProduct";
 import { ProductById } from "./components/ProductById";
-
+import {Toaster} from "sonner"
 function App() {
   return (
+    
     <BrowserRouter>
       <AuthProvider>
         <ProductsProvider>
@@ -37,6 +38,7 @@ function App() {
           </CartProvider>
         </ProductsProvider>
       </AuthProvider>
+      <Toaster/>
     </BrowserRouter>
   );
 }

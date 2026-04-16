@@ -1,14 +1,11 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export const Login = () => {
-  const { user } = useContext(AuthContext);
-
-  if (user) return <Navigate to="/profile" replace />;
   const { login } = useContext(AuthContext);
   const [formRegister, setFormRegister] = useState({ email: "", password: "" });
-
   const { email, password } = formRegister;
   const navigate = useNavigate();
 
@@ -20,8 +17,12 @@ export const Login = () => {
     e.preventDefault();
 
     const loginValid = await login(email, password);
-    if (loginValid) navigate("/");
-    else console.error("error en el login");
+    if (loginValid) {
+      toast.success(`Bienvenid@ ${loginValid.name}`);
+      navigate("/");
+    } else {
+      toast.error("Credenciales incorrectas ❌");
+    }
   };
 
   return (
@@ -67,7 +68,7 @@ export const Login = () => {
           type="submit"
           className="w-60 mt-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white  rounded-xl font-semibold tracking-wide shadow-[0_0_10px_rgba(34,211,238,0.4)] hover:shadow-[0_0_20px_rgba(34,211,238,0.8)] hover:scale-[1.02] transition-all duration-300 cursor-pointer"
         >
-          Ingresar
+          Iniciar sesión
         </button>
       </form>
     </div>
