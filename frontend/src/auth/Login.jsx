@@ -17,11 +17,11 @@ export const Login = () => {
     e.preventDefault();
 
     const loginValid = await login(email, password);
-    if (loginValid) {
-      toast.success(`Bienvenid@ ${loginValid.name}`);
-      navigate("/");
+    if (loginValid.user) {
+      toast.success(`Bienvenid@ ${loginValid.user?.name || ""}`);
+      // navigate("/");
     } else {
-      toast.error("Credenciales incorrectas ❌");
+      toast.error(loginValid.error);
     }
   };
 
