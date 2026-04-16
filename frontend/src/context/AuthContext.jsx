@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
-  console.log("usuario",user)
+  console.log("usuario", user);
 
   // si hay token guardado, recupera el usuario del backend (opcional)
   useEffect(() => {
@@ -25,7 +25,9 @@ export const AuthProvider = ({ children }) => {
       const data = await res.json();
       // console.log(data)
 
-      if (!res.ok) throw new Error(data.msg || "Error en el login");
+      if (!res.ok) {
+        return {error: data.message}
+      }
 
       // guarda en localStorage
       localStorage.setItem("token", data.token);
@@ -33,10 +35,10 @@ export const AuthProvider = ({ children }) => {
 
       setToken(data.token);
       setUser(data.user);
-      return data.user;
+      return {user:data.user};
     } catch (error) {
       console.error(error);
-      return null;
+      return {error:"Error del servidor"}
     }
   };
 
@@ -47,51 +49,48 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
-
-  const register = async(name,email,password,role)=>{
-    try{
-        const res = await fetch("http://localhost:5000/api/auth/register",{
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({name,email,password,role})  
-        })
-        const data = await res.json()
-        console.log("registro",data)
-        if(!res.ok) throw new Error(data.message || "Error en Register");
-
-     
-        return data;
-
-    }catch(error){
-        console.error(error.message)
-
-    }
-
-  }
-
-  const profile =async()=>{
-    try{
-      const res =await fetch("http://localhost:5000/api/auth/profile",{
-         headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-
+  const register = async (name, email, password, role) => {
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, role }),
       });
-      if(!res.ok) throw new Error("Error al obtener el perfil")
-        const data = await res.json()
-      setUser(data)
-      localStorage.setItem("user",JSON.stringify(data))
-      console.log("localstorager",localStorage)
-      return data
-    }catch(error){
-      console.error(message.error)
+      const data = await res.json();
+      console.log("registro", data);
+      if (!res.ok) {
+        return { error: data.message };
+      }
 
+      return { user: data.user };
+    } catch (error) {
+      return {error:"Error del servidor"}
     }
-  }
+  };
+
+  const profile = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/profile", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) throw new Error("Error al obtener el perfil");
+      const data = await res.json();
+      setUser(data);
+      localStorage.setItem("user", JSON.stringify(data));
+      console.log("localstorager", localStorage);
+      return data;
+    } catch (error) {
+      console.error(message.error);
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout,register,profile }}>
+    <AuthContext.Provider
+      value={{ user, token, login, logout, register, profile }}
+    >
       {children}
     </AuthContext.Provider>
   );
