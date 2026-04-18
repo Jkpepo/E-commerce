@@ -7,8 +7,16 @@ const productSchema = new mongoose.Schema(
     image: { type: String }, // URL de la imagen
     stock: { type: Number, default: 1 },
     category: { type: String},
-    quantity: {type: Number,default:1}
+    quantity: {type: Number,default:1},
+    seller: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+        required: true
+    
+      }
   },
+
+  
   { timestamps: true }  // Auto agrega createdAt y updatedAt
 );
 
