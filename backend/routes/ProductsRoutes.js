@@ -5,6 +5,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  getMyProducts
 } from "../controllers/productsController.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { sellerOnly } from "../middlewares/authMiddleware.js";
@@ -12,6 +13,7 @@ import { sellerOnly } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 router.get("/", getAllProducts);
+router.get("/myproducts", authMiddleware, sellerOnly, getMyProducts);
 router.get("/:id", getProductById);
 router.post("/",authMiddleware,sellerOnly,createProduct);
 router.put("/:id", updateProduct);

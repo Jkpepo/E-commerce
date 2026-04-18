@@ -44,7 +44,9 @@ export const  getAllProducts = ("/",async (req,res)=>{
 
 export const createProduct=("/",async (req, res) => {
   try {
-    const newProduct = await Product.create(req.body);// este Product viene de mi models es como POO 
+    const newProduct = await Product.create({
+        ...req.body,
+        seller:req.user.id});// este Product viene de mi models es como POO 
     res.status(201).json(newProduct);
   } catch (error) {
     console.error(error);
@@ -94,6 +96,18 @@ export const deleteProduct =("/:id", async (req,res)=>{
     }
 
 })
+
+// GET ----> obtener los productos de cada vendedor
+
+export const getMyProducts = async (req, res) => {
+  try {
+    const products = await Product.find({ seller: req.user.id })
+    .populate("seller", "name email");;
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: "Error" });
+  }
+};
 
 
 
