@@ -19,7 +19,7 @@ export const Login = () => {
     const loginValid = await login(email, password);
     if (loginValid.user) {
       toast.success(`Bienvenid@ ${loginValid.user?.name || ""}`);
-      // navigate("/");
+      navigate("/");
     } else {
       toast.error(loginValid.error);
     }
