@@ -6,7 +6,7 @@ import { CartModal } from "../components/CartModal";
 export const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  const { user, token } = useContext(AuthContext);
+  const { user, token, logout } = useContext(AuthContext);
   const [car, setCar] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [recentProduct, setRecentProduct] = useState(null);
@@ -16,8 +16,6 @@ export function CartProvider({ children }) {
     shipment: 0,
     totalToPay: 0,
   });
-  const navigate = useNavigate();
-
   useEffect(() => {
     const fetchCart = async () => {
       if (!user || !token) return;
@@ -29,9 +27,15 @@ export function CartProvider({ children }) {
           },
         });
 
+        if (res.status === 401) {
+          logout();
+          navigate("/login");
+          return;
+        }
+
         if (!res.ok) {
-          console.log("No autorizado o error:", res.status);
-          return; 
+          console.log("Error al obtener carrito:", res.status);
+          return;
         }
 
         const data = await res.json();
