@@ -1,10 +1,10 @@
-import { createContext, useState, useEffect,useContext } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { AuthContext } from "./AuthContext";
 
 export const ProductsContext = createContext();
 
 export function ProductsProvider({ children }) {
-  const { token } =useContext(AuthContext)
+  const { token } = useContext(AuthContext);
 
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState(null);
@@ -14,7 +14,7 @@ export function ProductsProvider({ children }) {
   // y este me almacena lo que digite y me ayuda para controlar la busqueda
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
-  const [error,setError]=useState(null)
+  const [error, setError] = useState(null);
 
   const BASE_URL = "http://localhost:5000/api/products/";
 
@@ -31,26 +31,20 @@ export function ProductsProvider({ children }) {
     fetchProducts();
   }, []);
 
-
-  const getProductById=async(id)=>{
-    
-    try{
-      setProduct(null);     
+  const getProductById = async (id) => {
+    try {
+      setProduct(null);
       setError(null);
-      const result =await fetch(`${BASE_URL}${id}`)
+      const result = await fetch(`${BASE_URL}${id}`);
       if (!result.ok) {
-        setError("dato no encontrado")
-     
-   }
-      const data= await result.json()
-      setProduct(data)
-    
-
-    }catch(error){
-      console.log(error)
-
+        setError("dato no encontrado");
+      }
+      const data = await result.json();
+      setProduct(data);
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
   const createProduct = async (
     name,
@@ -59,7 +53,7 @@ export function ProductsProvider({ children }) {
     quantity,
     category,
     description,
-    image
+    image,
   ) => {
     try {
       const result = await fetch(BASE_URL, {
@@ -86,6 +80,56 @@ export function ProductsProvider({ children }) {
     }
   };
 
+  const getProductBySeller = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}myproducts`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
+      if (!res.ok) {
+        throw new Error("Error al obtener productos");
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+  };
+
+
+  const updateProduct = async(id,updatedData)=>{
+    try{
+      const resultUpdate = await fetch(`${BASE_URL}${id}`,{
+        method: "PUT",
+        headers:{
+          "Content-Type":"application/json",
+          Authorization:`Bearer ${token}`
+        },
+        body: JSON.stringify(updatedData)
+      })
+       if (!resultUpdate.ok) {
+      const error = await resultUpdate.json();
+      throw new Error(error.message);
+    }
+      const data = await resultUpdate.json();
+      setProducts((prev) =>
+      prev.map((p) => (p._id === data._id ? data : p))
+    );
+      console.log(data)
+      return data
+
+
+    }catch(error){
+      console.log(error)
+      return null
+
+    }
+      
+  }
   return (
     <ProductsContext.Provider
       value={{
@@ -99,8 +143,10 @@ export function ProductsProvider({ children }) {
         setQuery,
         createProduct,
         getProductById,
+        getProductBySeller,
+        updateProduct,
         product,
-        error
+        error,
       }}
     >
       {children}
