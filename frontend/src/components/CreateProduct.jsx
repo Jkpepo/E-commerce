@@ -50,7 +50,7 @@ export const CreateProduct = () => {
         {
           method: "POST",
           body: image,
-        }
+        },
       );
 
       const data = await res.json();
@@ -76,7 +76,6 @@ export const CreateProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
 
     if (!name.trim()) {
       toast.error("El nombre es obligatorio");
@@ -108,7 +107,6 @@ export const CreateProduct = () => {
       return;
     }
 
-  
     const productValid = await createProduct(
       name,
       price,
@@ -116,7 +114,7 @@ export const CreateProduct = () => {
       quantity,
       category,
       description,
-      imageProduct
+      imageProduct,
     );
 
     if (productValid) {
@@ -199,14 +197,16 @@ export const CreateProduct = () => {
           className="flex items-center w-full p-2 m-6 gap-4 border-b border-[#00ffff] py-2 hover:shadow-[0_0_10px_#00ffff] transition-all duration-300"
         />
 
-        <input
-          type="file"
-          name="image"
-          accept="image/*"
-          onChange={handleUploadImage}
-          className="flex items-center w-full p-2 m-6 gap-4 border-b border-[#00ffff] py-2 hover:shadow-[0_0_10px_#00ffff] transition-all duration-300"
-        />
+        <label className="w-full m-6 p-6 border-2 border-dashed border-cyan-400 rounded-xl text-center cursor-pointer hover:bg-cyan-400/10">
+          <p className="text-cyan-400">Selecciona una imagen</p>
 
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleUploadImage}
+            className="hidden" // oculta lo de seleccion de imagen y eso que se ve feo
+          />
+        </label>
         <button
           type="submit"
           disabled={loadingImage}
