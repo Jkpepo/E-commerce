@@ -1,132 +1,124 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProductsContext } from "../context/UseProductsContext";
-import { useState } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { CartContext } from "../context/UseCartContext";
+import { CartSummary } from "./CartSummary";
 import { toast } from "sonner";
-
-export const CreateProduct = () => {
-  const { user } = useContext(AuthContext);
-  const { createProduct } = useContext(ProductsContext);
-  const [imageProduct, setImageProduct] = useState(null);
-  const [loadingImage, setLoadingImage] = useState(false);
-  const [formProduct, setFormProduct] = useState({
-    name: "",
-    price: "",
-    stock: "",
-    quantity: "",
-    category: "",
-    description: "",
-  });
-
+export const UpdateProduct = () => {
+  const { id } = useParams();
+  const { updateProduct, getProductById, product, error } =
+    useContext(ProductsContext);
   const navigate = useNavigate();
-  const { name, price, stock, quantity, category, description } = formProduct;
+  const [formProduct, setFormProduct] = useState(null);
+  const [loadingImage, setLoadingImage] = useState(false);
 
-  if (user?.role == "comprador") {
-    return <h1>NO puedes crear productos eres comprador</h1>;
-  }
+  useEffect(() => {
+    getProductById(id); // traigo el producto con esta funcion por el id /cada vez que selecciones un producto el id es diferente cambia para eso el effect
+  }, [id]);
+
+  useEffect(() => {
+    if (product) {
+      // aqui pasa algo similart pero creamos un formProduct para no modificar el estado global directamente sino que hacemos una copia de ese producto para editarlo y enviar
+      setFormProduct(product);
+    }
+  }, [product]);
 
   const handleUploadImage = async (e) => {
     const file = e.target.files[0];
+    if (!file) return;
 
-    if (!file) {
-      toast.error("Selecciona una imagen");
-      return;
-    }
-
-    await uploadImage(file);
-  };
-
-  const uploadImage = async (file) => {
     try {
       setLoadingImage(true);
 
-      const image = new FormData();
-      image.append("file", file);
-      image.append("upload_preset", "e-commerce");
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", "e-commerce");
 
       const res = await fetch(
         "https://api.cloudinary.com/v1_1/dwmyklpvq/image/upload",
         {
           method: "POST",
-          body: image,
+          body: data,
         },
       );
 
-      const data = await res.json();
+      const img = await res.json();
 
-      if (!data.secure_url) {
-        toast.error("Error al subir imagen");
-        setLoadingImage(false);
-        return;
-      }
+      setFormProduct({
+        ...formProduct,
+        image: img.secure_url,
+      });
 
-      setImageProduct(data.secure_url);
       toast.success("Imagen subida correctamente");
-      setLoadingImage(false);
     } catch (error) {
       toast.error("Error al subir imagen");
+    } finally {
       setLoadingImage(false);
     }
   };
 
   const handleChange = (e) => {
-    setFormProduct({ ...formProduct, [e.target.name]: e.target.value });
+    setFormProduct({
+      // aqui hacemos la copia y es la que se le va a enviar a la funcion updateProduct
+      ...formProduct,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name.trim()) {
+    if (!formProduct.name.trim()) {
       toast.error("El nombre es obligatorio");
       return;
     }
 
-    if (!price || price <= 0) {
+    if (!formProduct.price || formProduct.price <= 0) {
       toast.error("El precio debe ser mayor a 0");
       return;
     }
 
-    if (!stock || stock < 0) {
+    if (!formProduct.stock || formProduct.stock < 0) {
       toast.error("El stock es obligatorio");
       return;
     }
+    if (!formProduct.quantity || formProduct.quantity <= 0) {
+      toast.error("La cantidad es obligatoria");
+      return;
+    }
 
-    if (!category) {
+    if (!formProduct.category) {
       toast.error("Selecciona una categoría");
       return;
     }
 
-    if (!description.trim()) {
+    if (!formProduct.description.trim()) {
       toast.error("La descripción es obligatoria");
       return;
     }
 
-    if (!imageProduct) {
+    if (!formProduct.image) {
       toast.error("Debes subir una imagen");
       return;
     }
+    const result = await updateProduct(id, formProduct);
 
-    const productValid = await createProduct(
-      name,
-      price,
-      stock,
-      quantity,
-      category,
-      description,
-      imageProduct,
-    );
-
-    if (productValid) {
-      toast.success("Producto creado con éxito");
-
+    if (result) {
+      toast.success("Producto editado correctamente");
       setTimeout(() => {
+        toast.dismiss();
         navigate("/profile");
-      }, 1500);
+      }, 1000);
     } else {
       toast.error("Producto NO fue creado");
     }
   };
+  if (!formProduct) return <p className="text-center mt-10">Cargando...</p>;
+
+  if (error)
+    return (
+      <h1 className="text-center mt-10 text-red-500">Producto no encontrado</h1>
+    );
 
   return (
     <div className="flex justify-center items-center">
@@ -134,15 +126,15 @@ export const CreateProduct = () => {
         onSubmit={handleSubmit}
         className="flex flex-col items-center justify-center w-[400px] p-8 rounded-3xl   bg-[#1e293b]/70 border border-[#334155] shadow-[0_0_20px_rgba(56,189,248,0.2)] backdrop-blur-md text-[#f8fafc] transition-all duration-300 hover:shadow-cyan-400/40"
       >
-        <h1 className="text-3xl font-bold uppercase text-[#00ffff] tracking-[4px] drop-shadow-[0_0_10px_#00ffff]">
-          crear producto
+        <h1 className="text-2xl font-bold uppercase text-[#00ffff] tracking-[4px] drop-shadow-[0_0_10px_#00ffff]">
+          Editar producto
         </h1>
 
         <input
           type="text"
           name="name"
           placeholder="nombre producto"
-          value={name}
+          value={formProduct.name}
           onChange={handleChange}
           className="flex items-center w-full p-2 m-6  gap-4 border-b border-[#00ffff] py-2 hover:shadow-[0_0_10px_#00ffff] transition-all duration-300"
         />
@@ -151,7 +143,7 @@ export const CreateProduct = () => {
           type="number"
           name="price"
           placeholder="precio"
-          value={price}
+          value={formProduct.price}
           onChange={handleChange}
           className="flex items-center w-full p-2 m-6  gap-4 border-b border-[#00ffff] py-2 hover:shadow-[0_0_10px_#00ffff] transition-all duration-300"
         />
@@ -160,23 +152,24 @@ export const CreateProduct = () => {
           type="number"
           name="stock"
           placeholder="stock del producto"
-          value={stock}
+          value={formProduct.stock}
           onChange={handleChange}
           className="flex items-center w-full p-2 m-6  gap-4 border-b border-[#00ffff] py-2 hover:shadow-[0_0_10px_#00ffff] transition-all duration-300"
         />
-
-        <input
-          type="number"
-          name="quantity"
-          placeholder="cantidad"
-          value={quantity}
-          onChange={handleChange}
-          className="flex items-center w-full p-2 m-6  gap-4 border-b border-[#00ffff] py-2 hover:shadow-[0_0_10px_#00ffff] transition-all duration-300"
-        />
-
+        <label className=" w-full flex justify-start">
+          <p className="text-cyan-400">Cantidad</p>
+          <input
+            type="number"
+            name="quantity"
+            placeholder="cantidad"
+            value={formProduct.quantity}
+            onChange={handleChange}
+            className="flex items-center w-full p-2 m-6  gap-4 border-b border-[#00ffff] py-2 hover:shadow-[0_0_10px_#00ffff] transition-all duration-300"
+          />
+        </label>
         <select
           name="category"
-          value={category}
+          value={formProduct.category}
           onChange={handleChange}
           className="bg-[#1e293b]/70 flex items-center w-full p-2 m-6 gap-4 border-b border-[#00ffff] py-2 hover:shadow-[0_0_10px_#00ffff] transition-all duration-300"
         >
@@ -192,14 +185,14 @@ export const CreateProduct = () => {
         <textarea
           name="description"
           placeholder="descripcion"
-          value={description}
+          value={formProduct.description}
           onChange={handleChange}
           className="flex items-center w-full p-2 m-6 gap-4 border-b border-[#00ffff] py-2 hover:shadow-[0_0_10px_#00ffff] transition-all duration-300"
         />
 
         <label className="w-full m-6 p-6 border-2 border-dashed border-cyan-400 rounded-xl text-center cursor-pointer hover:bg-cyan-400/10">
           <p className="text-cyan-400">
-            {imageProduct ? "Cambiar imagen" : "Selecciona una imagen"}
+            {formProduct.image ? "Cambiar imagen" : "Selecciona una imagen"}
           </p>
 
           <input
@@ -212,19 +205,21 @@ export const CreateProduct = () => {
         <button
           type="submit"
           disabled={loadingImage}
-          className="w-60 mt-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-semibold tracking-wide shadow-[0_0_10px_rgba(34,211,238,0.4)] hover:shadow-[0_0_20px_rgba(34,211,238,0.8)] hover:scale-[1.02] transition-all duration-300 cursor-pointer"
+          className={`w-60 mt-6 py-2 rounded-xl font-semibold transition-all
+    ${
+      loadingImage
+        ? "opacity-50 cursor-not-allowed"
+        : "bg-gradient-to-r from-cyan-500 to-blue-600 hover:scale-[1.02]"
+    }
+  `}
         >
-          {loadingImage ? "Subiendo..." : "Agregar Producto"}
+          {loadingImage ? "Subiendo..." : "Actualizar Producto"}
         </button>
 
-        {loadingImage && <p className="text-cyan-400">Subiendo imagen...</p>}
-
-        {imageProduct && (
-          <img
-            src={imageProduct}
-            className="w-24 h-24 object-cover mt-2 rounded"
-          />
-        )}
+        <img
+          src={formProduct.image}
+          className="w-24 h-24 object-cover mt-2 rounded"
+        />
       </form>
     </div>
   );
