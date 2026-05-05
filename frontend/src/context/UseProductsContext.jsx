@@ -80,9 +80,9 @@ export function ProductsProvider({ children }) {
     }
   };
 
-  const getProductBySeller = async () => {
+  const getProductBySeller = async (page=1) => {
     try {
-      const res = await fetch(`${BASE_URL}myproducts`, {
+      const res = await fetch(`${BASE_URL}myproducts?page=${page}&limit=5`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -130,6 +130,32 @@ export function ProductsProvider({ children }) {
     }
       
   }
+
+  const deleteProduct= async(id)=>{
+      try{
+        const resultDelete = await fetch(`${BASE_URL}${id}`,{
+        method: "DELETE",
+        headers:{
+          "Content-Type":"application/json",
+          Authorization:`Bearer ${token}`
+        },
+      })
+       if (!resultDelete.ok) {
+      const error = await resultDelete.json();
+      throw new Error(error.message);
+    }
+      const data = await resultDelete.json();
+      setProducts((prev) =>
+      prev.filter((p) => (p._id !== data._id ))
+    );
+      console.log(data)
+      return data
+
+      }catch(error){
+        console.error(error)
+      }
+
+    }
   return (
     <ProductsContext.Provider
       value={{
@@ -145,6 +171,7 @@ export function ProductsProvider({ children }) {
         getProductById,
         getProductBySeller,
         updateProduct,
+        deleteProduct,
         product,
         error,
       }}
